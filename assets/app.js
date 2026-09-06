@@ -244,13 +244,17 @@ async function initTool() {
 }
 
 function updateSummary(doc) {
-  const rows = [...doc.querySelectorAll('tbody tr')];
+  const table = doc.querySelector('table');
+  const rows = [...(table?.querySelectorAll('tbody tr') || [])];
+  const actionIndex = table ? findReportColumns(table).find(col => col.key === 'action')?.index : -1;
   const rowText = row => row.textContent || '';
   const kindOf = row => {
     const text = rowText(row);
-    if (/止损|暂停|降价|无订单/.test(text)) return 'stop';
-    if (/重点进攻|进攻|放大/.test(text)) return 'attack';
-    if (/防守|守住/.test(text)) return 'defense';
+    const actionCell = actionIndex >= 0 ? row.cells[actionIndex] : null;
+    const action = actionCell?.textContent || text;
+    if (/止损|暂停|降价|无订单/.test(action)) return 'stop';
+    if (/重点进攻|进攻|放大/.test(action)) return 'attack';
+    if (/防守|守住/.test(action)) return 'defense';
     return 'observe';
   };
   const counts = { stop: 0, attack: 0, defense: 0, observe: 0 };
@@ -362,23 +366,41 @@ function enhanceReportTable(table, columns) {
 
 function buildColumnControls(host) {
   const table = host.querySelector('table');
-  if (!table || host.querySelector('.column-controls')) return;
+  if (!table) return;
+  host.querySelectorAll('.column-controls,.report-toolbar,.view-controls').forEach(el => el.remove());
   const columns = findReportColumns(table);
   if (!columns.length) return;
   markReportColumns(table, columns);
   enhanceReportTable(table, columns);
+  table.classList.add('freeze-columns');
   const controls = document.createElement('section');
   controls.className = 'column-controls';
-  controls.innerHTML = `<details open><summary><span>字段显示 / 伸缩表头</span><span class="control-actions"><button class="secondary" type="button" data-show-core>精简视图</button><button class="secondary" type="button" data-show-all>全部显示</button></span></summary><p class="muted compact">默认隐藏“月搜索量”和“字段来源”，主表只展示 Sorftime 搜索量趋势；取消勾选仅隐藏前台展示，不改动原始报告。</p><div class="column-toggle-list">${columns.map(col => `<label class="column-toggle"><input type="checkbox" data-column-index="${col.index}" ${col.defaultVisible === false ? '' : 'checked'}><span>${escapeHtml(col.label)}</span></label>`).join('')}</div></details>`;
+  controls.innerHTML = `<details open><summary><span>视图与字段</span><span class="control-actions"><button class="secondary" type="button" data-show-core>核心视图</button><button class="secondary" type="button" data-show-all>全部字段</button></span></summary><div class="view-toolbar"><span>打法筛选</span><button type="button" data-action-filter="all">全部</button><button type="button" data-action-filter="defense">防守</button><button type="button" data-action-filter="attack">进攻</button><button type="button" data-action-filter="stop">止损</button><button type="button" data-action-filter="observe">观察</button><label>订单排序 <select data-order><option value="none">默认</option><option value="desc">高→低</option><option value="asc">低→高</option></select></label><label class="freeze-toggle"><input type="checkbox" data-freeze checked> 冻结表头与关键词</label></div><p class="muted compact">趋势列仅显示摘要，悬停或聚焦查看完整 13 周图；字段开关只影响前台显示，不改动原始报告。</p><div class="column-toggle-list">${columns.map(col => `<label class="column-toggle"><input type="checkbox" data-column-index="${col.index}" ${col.defaultVisible === false ? '' : 'checked'}><span>${escapeHtml(col.label)}</span></label>`).join('')}</div></details>`;
   host.prepend(controls);
   columns.forEach(col => {
     if (col.defaultVisible === false) setColumnVisible(table, col.index, false);
   });
   controls.addEventListener('change', event => {
     const input = event.target.closest('input[data-column-index]');
-    if (!input) return;
-    setColumnVisible(table, Number(input.dataset.columnIndex), input.checked);
+    if (input) setColumnVisible(table, Number(input.dataset.columnIndex), input.checked);
+    if (event.target.matches('[data-freeze]')) table.classList.toggle('freeze-columns', event.target.checked);
+    if (event.target.matches('[data-order]')) {
+      const order = event.target.value;
+      const orderIndex = columns.find(col => col.key === 'orders')?.index;
+      if (orderIndex === undefined) return;
+      [...table.tBodies].forEach(tbody => [...tbody.rows].sort((a,b) => {
+        const av = numbersFromText(a.cells[orderIndex]?.textContent)[0]?.value || 0;
+        const bv = numbersFromText(b.cells[orderIndex]?.textContent)[0]?.value || 0;
+        return order === 'asc' ? av-bv : bv-av;
+      }).forEach(row => tbody.appendChild(row)));
+    }
   });
+  controls.querySelectorAll('[data-action-filter]').forEach(button => button.addEventListener('click', () => {
+    const filter = button.dataset.actionFilter;
+    table.querySelectorAll('tbody tr').forEach(row => { row.hidden = filter !== 'all' && !row.classList.contains(`action-${filter}`); });
+    controls.querySelectorAll('[data-action-filter]').forEach(b => b.classList.toggle('active', b === button));
+  }));
+  controls.querySelector('[data-action-filter="all"]')?.classList.add('active');
   controls.querySelector('[data-show-all]')?.addEventListener('click', event => {
     event.preventDefault();
     controls.querySelectorAll('input[data-column-index]').forEach(input => {
