@@ -32,3 +32,19 @@
 .column-toggle{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:8px 11px;color:var(--text);background:rgba(255,255,255,.035);font-size:13px;font-weight:700;cursor:pointer}
 .column-toggle input{accent-color:var(--brand-strong)}
 @media(max-width:700px){.column-controls-head{display:block}.column-controls-head button{margin-top:10px}.column-toggle{font-size:12px}}
+.report-shell{width:min(1960px,calc(100vw - 32px));max-width:none;padding-left:16px;padding-right:16px}
+.report-shell .summary{grid-template-columns:repeat(4,minmax(180px,1fr))}
+.report-content table{min-width:1560px}
+.report-content .report-col-priority{min-width:64px;max-width:72px}
+.report-content .report-col-keyword{min-width:160px;max-width:190px;left:64px}
+.report-content .report-col-monthlySearches{min-width:105px;max-width:120px}
+.report-content .report-col-competition{min-width:110px;max-width:130px}
+.report-content .report-col-bid{min-width:92px;max-width:105px}
+.report-content .report-col-trend{min-width:250px;max-width:290px}
+.report-content .report-col-topCompetitor{min-width:135px;max-width:160px}
+.report-content .report-col-ownOrganicRank,.report-content .report-col-competitorOrganicRank{min-width:145px;max-width:175px}
+.report-content .report-col-orders,.report-content .report-col-spend,.report-content .report-col-acos{min-width:95px;max-width:115px}
+.report-content .report-col-fieldSource{min-width:210px;max-width:260px}
+.report-content .report-col-action{min-width:280px;max-width:340px}
+.trend-trigger{min-width:205px}
+@media(max-width:900px){.report-shell{width:100%;padding-left:10px;padding-right:10px}.report-shell .summary{grid-template-columns:repeat(2,1fr)}}
