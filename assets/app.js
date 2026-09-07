@@ -6,6 +6,7 @@ const BASE_PATH = location.hostname.endsWith('github.io') ? '/AmazonBackend0830w
 const REPORT_COLUMNS = [
   { key: 'priority', label: '优先级', aliases: ['优先级'] },
   { key: 'keyword', label: '关键词', aliases: ['关键词'] },
+  { key: 'competitionSummary', label: 'SIF 竞争格局', aliases: ['SIF 竞争格局'] },
   { key: 'monthlySearches', label: '月搜索量', aliases: ['月搜索量'], defaultVisible: false },
   { key: 'competition', label: '竞争难度', aliases: ['竞争难度'] },
   { key: 'bid', label: '参考竞价', aliases: ['参考竞价'] },
@@ -13,6 +14,7 @@ const REPORT_COLUMNS = [
   { key: 'topCompetitor', label: '最强竞对', aliases: ['最强竞对'] },
   { key: 'ownOrganicRank', label: '自己自然位', aliases: ['自己自然位'] },
   { key: 'competitorOrganicRank', label: '竞对自然位', aliases: ['竞对自然位'] },
+  { key: 'ranks', label: '自然位', aliases: ['自然位'] },
   { key: 'orders', label: '广告：订单', aliases: ['订单'] },
   { key: 'spend', label: '广告：花费', aliases: ['花费'] },
   { key: 'acos', label: '广告：ACOS', aliases: ['ACOS'] },
@@ -445,8 +447,16 @@ async function initReport() {
     const html = await response.text();
     const doc = new DOMParser().parseFromString(html, 'text/html');
     updateSummary(doc);
+    doc.querySelector('.top')?.remove();
+    doc.querySelector('#summary-module')?.remove();
+    doc.querySelector('.settings')?.remove();
     host.innerHTML = doc.body.innerHTML;
-    buildColumnControls(host);
+    const table = host.querySelector('table');
+    if (table) {
+      const columns = findReportColumns(table);
+      markReportColumns(table, columns);
+      table.classList.add('ops-report-table', 'freeze-columns');
+    }
   } catch (error) {
     host.innerHTML = `<div class="empty">${escapeHtml(humanError(error))}。请确认任务已完成，且 OSS CORS 已允许本站域名。</div>`;
   }

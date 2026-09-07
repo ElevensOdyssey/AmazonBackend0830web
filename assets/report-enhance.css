@@ -14,3 +14,8 @@
 html[data-theme=light] .ops-report-table th,html[data-theme=light] .column-toggle,html[data-theme=light] .view-toolbar button{color:#182334}
 @media(max-width:900px){.report-shell{width:100%;padding:12px 8px 40px}.report-shell .summary{grid-template-columns:repeat(2,1fr)}.freeze-toggle{margin-left:0}.column-controls{margin:8px}.report-content table{min-width:1380px}}
 @media(max-width:520px){.report-shell .summary{grid-template-columns:repeat(2,1fr)}.report-shell .metric{padding:10px 12px}.report-shell .metric b{font-size:24px}.control-actions{margin-top:8px}.column-controls summary{align-items:flex-start;flex-direction:column}.trend-popover{position:fixed;left:10vw;top:18vh}}
+.report-content .top,
+.report-content #summary-module,
+.report-content .settings {
+  display: none !important;
+}
