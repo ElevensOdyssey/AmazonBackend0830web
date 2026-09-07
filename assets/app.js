@@ -10,7 +10,7 @@ const REPORT_COLUMNS = [
   { key: 'monthlySearches', label: '月搜索量', aliases: ['月搜索量'], defaultVisible: false },
   { key: 'competition', label: '竞争难度', aliases: ['竞争难度'] },
   { key: 'bid', label: '参考竞价', aliases: ['参考竞价'] },
-  { key: 'trend', label: '搜索量月度趋势（Sorftime）', aliases: ['搜索量月度趋势', '搜索量 月度趋势', 'Sorftime'] },
+  { key: 'trend', label: 'ABA 近13周', aliases: ['ABA 近13周', 'ABA近13周', '搜索量月度趋势', '搜索量 月度趋势', 'Sorftime'] },
   { key: 'topCompetitor', label: '最强竞对', aliases: ['最强竞对'] },
   { key: 'ownOrganicRank', label: '自己自然位', aliases: ['自己自然位'] },
   { key: 'competitorOrganicRank', label: '竞对自然位', aliases: ['竞对自然位'] },
@@ -19,7 +19,8 @@ const REPORT_COLUMNS = [
   { key: 'spend', label: '广告：花费', aliases: ['花费'] },
   { key: 'acos', label: '广告：ACOS', aliases: ['ACOS'] },
   { key: 'fieldSource', label: '字段来源', aliases: ['字段来源'], defaultVisible: false },
-  { key: 'action', label: '打法建议', aliases: ['打法建议'] }
+  { key: 'action', label: '打法建议', aliases: ['打法建议'] },
+  { key: 'promotionAssessment', label: 'SIF 推广评估', aliases: ['SIF 推广评估'], defaultVisible: false }
 ];
 
 function appUrl(path = '/') {
@@ -369,46 +370,97 @@ function enhanceReportTable(table, columns) {
 function buildColumnControls(host) {
   const table = host.querySelector('table');
   if (!table) return;
-  host.querySelectorAll('.column-controls,.report-toolbar,.view-controls').forEach(el => el.remove());
+  host.querySelectorAll('.column-controls,.report-filter-panel,.report-toolbar,.view-controls').forEach(el => el.remove());
   const columns = findReportColumns(table);
   if (!columns.length) return;
   markReportColumns(table, columns);
-  enhanceReportTable(table, columns);
   table.classList.add('freeze-columns');
-  const controls = document.createElement('section');
-  controls.className = 'column-controls';
-  controls.innerHTML = `<details open><summary><span>视图与字段</span><span class="control-actions"><button class="secondary" type="button" data-show-core>核心视图</button><button class="secondary" type="button" data-show-all>全部字段</button></span></summary><div class="view-toolbar"><span>打法筛选</span><button type="button" data-action-filter="all">全部</button><button type="button" data-action-filter="defense">防守</button><button type="button" data-action-filter="attack">进攻</button><button type="button" data-action-filter="stop">止损</button><button type="button" data-action-filter="observe">观察</button><label>订单排序 <select data-order><option value="none">默认</option><option value="desc">高→低</option><option value="asc">低→高</option></select></label><label class="freeze-toggle"><input type="checkbox" data-freeze checked> 冻结表头与关键词</label></div><p class="muted compact">趋势列仅显示摘要，悬停或聚焦查看完整 13 周图；字段开关只影响前台显示，不改动原始报告。</p><div class="column-toggle-list">${columns.map(col => `<label class="column-toggle"><input type="checkbox" data-column-index="${col.index}" ${col.defaultVisible === false ? '' : 'checked'}><span>${escapeHtml(col.label)}</span></label>`).join('')}</div></details>`;
+  const controls = document.createElement('details');
+  controls.className = 'report-filter-panel';
+  controls.innerHTML = `<summary><span class="filter-title"><b>表格筛选</b><small>全部筛选、排序与字段显示</small></span><span class="filter-status"><b data-visible-count>0</b> 条可见<i data-active-count hidden>0 个条件</i></span></summary><div class="filter-body"><div class="filter-actions"><button type="button" data-reset-filter>清空筛选</button><button type="button" data-default-view>恢复默认视图</button><label class="freeze-toggle"><input type="checkbox" data-freeze checked> 冻结表头与关键词</label></div><div class="filter-grid"><label class="filter-wide"><span>关键词</span><input type="search" data-filter-keyword placeholder="搜索关键词"></label><label><span>SIF 竞争格局</span><select data-filter-availability="competitionSummary"><option value="all">全部</option><option value="yes">有数据</option><option value="no">数据缺失</option></select></label><label><span>竞争难度</span><select data-filter-difficulty><option value="all">全部</option><option value="high">高</option><option value="mid">中</option><option value="low">低</option><option value="missing">数据缺失</option></select></label><label><span>ABA 近13周</span><select data-filter-availability="trend"><option value="all">全部</option><option value="yes">有数据</option><option value="no">数据缺失</option></select></label><label><span>最强竞对</span><select data-filter-availability="topCompetitor"><option value="all">全部</option><option value="yes">有数据</option><option value="no">数据缺失</option></select></label><label><span>自然位</span><select data-filter-rank><option value="all">全部</option><option value="self">自己有排名</option><option value="competitor">竞对有排名</option><option value="both">双方有排名</option><option value="missing">双方缺失</option></select></label><label><span>字段来源</span><select data-filter-availability="fieldSource"><option value="all">全部</option><option value="yes">有说明</option><option value="no">数据缺失</option></select></label><label><span>排序字段</span><select data-sort-key><option value="default">默认顺序</option>${columns.filter(col => ['priority','monthlySearches','competition','bid','orders','spend','acos'].includes(col.key)).map(col => `<option value="${col.key}">${escapeHtml(col.label)}</option>`).join('')}</select></label><label><span>排序方向</span><select data-sort-direction><option value="desc">高 → 低</option><option value="asc">低 → 高</option></select></label></div><fieldset class="action-filter"><legend>打法建议</legend><button type="button" class="active" data-action-filter="all">全部</button><button type="button" data-action-filter="defense">防守</button><button type="button" data-action-filter="attack">进攻</button><button type="button" data-action-filter="stop">止损</button><button type="button" data-action-filter="observe">观察</button></fieldset><fieldset><legend>数值区间（留空表示不限）</legend><div class="range-grid">${[['priority','优先级'],['monthlySearches','月搜索量'],['bid','参考竞价'],['orders','广告订单'],['spend','广告花费'],['acos','广告 ACOS']].filter(([key]) => columns.some(col => col.key === key)).map(([key,label]) => `<label><span>${label}</span><span class="range-inputs"><input type="number" inputmode="decimal" data-range-key="${key}" data-range-side="min" placeholder="最低"><i>—</i><input type="number" inputmode="decimal" data-range-key="${key}" data-range-side="max" placeholder="最高"></span></label>`).join('')}</div></fieldset><fieldset><legend>字段显示</legend><div class="field-toolbar"><button type="button" data-show-core>核心字段</button><button type="button" data-show-all>全部字段</button></div><div class="column-toggle-list">${columns.map(col => `<label class="column-toggle"><input type="checkbox" data-column-index="${col.index}" ${col.defaultVisible === false ? '' : 'checked'}><span>${escapeHtml(col.label)}</span></label>`).join('')}</div></fieldset></div>`;
   host.prepend(controls);
+  const rows = [...table.querySelectorAll('tbody tr')];
+  rows.forEach((row, index) => { row.dataset.originalIndex = String(index); });
+  const columnByKey = key => columns.find(col => col.key === key);
+  const cellText = (row, key) => {
+    const col = columnByKey(key);
+    return col ? String(row.cells[col.index]?.textContent || '').trim() : '';
+  };
+  const hasData = text => Boolean(text && !/^(?:—|-|数据缺失|暂无|无)$/i.test(text.replace(/\s+/g, '')) && !/数据缺失/.test(text));
+  let actionFilter = 'all';
+  const applyFilters = () => {
+    const keyword = controls.querySelector('[data-filter-keyword]').value.trim().toLowerCase();
+    const difficulty = controls.querySelector('[data-filter-difficulty]').value;
+    const rankMode = controls.querySelector('[data-filter-rank]').value;
+    const availability = [...controls.querySelectorAll('[data-filter-availability]')];
+    const ranges = {};
+    controls.querySelectorAll('[data-range-key]').forEach(input => {
+      const value = input.value === '' ? null : Number(input.value);
+      (ranges[input.dataset.rangeKey] ||= {})[input.dataset.rangeSide] = Number.isFinite(value) ? value : null;
+    });
+    let visible = 0;
+    rows.forEach(row => {
+      let show = !keyword || cellText(row, 'keyword').toLowerCase().includes(keyword);
+      if (show && actionFilter !== 'all') show = row.classList.contains(`action-${actionFilter}`);
+      const difficultyText = cellText(row, 'competition');
+      if (show && difficulty !== 'all') {
+        const level = !hasData(difficultyText) ? 'missing' : /极高|高/.test(difficultyText) ? 'high' : /中/.test(difficultyText) ? 'mid' : 'low';
+        show = level === difficulty;
+      }
+      if (show && rankMode !== 'all') {
+        const rankText = cellText(row, 'ranks') || `${cellText(row, 'ownOrganicRank')} ${cellText(row, 'competitorOrganicRank')}`;
+        const self = /自己[^—-]*(?:P\s*\d|第\s*\d|\d+\/\d+)/i.test(rankText);
+        const competitor = /竞对[^—-]*(?:P\s*\d|第\s*\d|\d+\/\d+)/i.test(rankText);
+        show = rankMode === 'self' ? self : rankMode === 'competitor' ? competitor : rankMode === 'both' ? self && competitor : !self && !competitor;
+      }
+      if (show) show = availability.every(select => select.value === 'all' || (select.value === 'yes') === hasData(cellText(row, select.dataset.filterAvailability)));
+      if (show) show = Object.entries(ranges).every(([key, range]) => {
+        const value = numbersFromText(cellText(row, key))[0]?.value;
+        if (!Number.isFinite(value)) return range.min === null && range.max === null;
+        return (range.min === null || value >= range.min) && (range.max === null || value <= range.max);
+      });
+      row.hidden = !show;
+      if (show) visible += 1;
+    });
+    const sortKey = controls.querySelector('[data-sort-key]').value;
+    const direction = controls.querySelector('[data-sort-direction]').value;
+    [...table.tBodies].forEach(tbody => [...tbody.rows].sort((a, b) => {
+      if (sortKey === 'default') return Number(a.dataset.originalIndex) - Number(b.dataset.originalIndex);
+      const av = numbersFromText(cellText(a, sortKey))[0]?.value ?? -Infinity;
+      const bv = numbersFromText(cellText(b, sortKey))[0]?.value ?? -Infinity;
+      return direction === 'asc' ? av - bv : bv - av;
+    }).forEach(row => tbody.appendChild(row)));
+    controls.querySelector('[data-visible-count]').textContent = String(visible);
+    const changedColumns = [...controls.querySelectorAll('input[data-column-index]')].filter(input => {
+      const col = columns.find(item => item.index === Number(input.dataset.columnIndex));
+      return input.checked !== (col?.defaultVisible !== false);
+    }).length;
+    const active = (keyword ? 1 : 0) + (actionFilter === 'all' ? 0 : 1) + [...controls.querySelectorAll('select')].filter(select => !['all','default','desc'].includes(select.value)).length + [...controls.querySelectorAll('[data-range-key]')].filter(input => input.value !== '').length + changedColumns;
+    const badge = controls.querySelector('[data-active-count]');
+    badge.textContent = `${active} 个条件`;
+    badge.hidden = active === 0;
+  };
   columns.forEach(col => {
     if (col.defaultVisible === false) setColumnVisible(table, col.index, false);
   });
-  controls.addEventListener('change', event => {
+  controls.addEventListener('input', event => {
     const input = event.target.closest('input[data-column-index]');
     if (input) setColumnVisible(table, Number(input.dataset.columnIndex), input.checked);
     if (event.target.matches('[data-freeze]')) table.classList.toggle('freeze-columns', event.target.checked);
-    if (event.target.matches('[data-order]')) {
-      const order = event.target.value;
-      const orderIndex = columns.find(col => col.key === 'orders')?.index;
-      if (orderIndex === undefined) return;
-      [...table.tBodies].forEach(tbody => [...tbody.rows].sort((a,b) => {
-        const av = numbersFromText(a.cells[orderIndex]?.textContent)[0]?.value || 0;
-        const bv = numbersFromText(b.cells[orderIndex]?.textContent)[0]?.value || 0;
-        return order === 'asc' ? av-bv : bv-av;
-      }).forEach(row => tbody.appendChild(row)));
-    }
+    applyFilters();
   });
   controls.querySelectorAll('[data-action-filter]').forEach(button => button.addEventListener('click', () => {
-    const filter = button.dataset.actionFilter;
-    table.querySelectorAll('tbody tr').forEach(row => { row.hidden = filter !== 'all' && !row.classList.contains(`action-${filter}`); });
+    actionFilter = button.dataset.actionFilter;
     controls.querySelectorAll('[data-action-filter]').forEach(b => b.classList.toggle('active', b === button));
+    applyFilters();
   }));
-  controls.querySelector('[data-action-filter="all"]')?.classList.add('active');
   controls.querySelector('[data-show-all]')?.addEventListener('click', event => {
     event.preventDefault();
     controls.querySelectorAll('input[data-column-index]').forEach(input => {
       input.checked = true;
       setColumnVisible(table, Number(input.dataset.columnIndex), true);
     });
+    applyFilters();
   });
   controls.querySelector('[data-show-core]')?.addEventListener('click', event => {
     event.preventDefault();
@@ -418,7 +470,27 @@ function buildColumnControls(host) {
       input.checked = !hide.has(col?.key);
       setColumnVisible(table, Number(input.dataset.columnIndex), input.checked);
     });
+    applyFilters();
   });
+  controls.querySelector('[data-reset-filter]')?.addEventListener('click', () => {
+    controls.querySelectorAll('input[type="search"],input[type="number"]').forEach(input => { input.value = ''; });
+    controls.querySelectorAll('select').forEach(select => { select.value = select.matches('[data-sort-direction]') ? 'desc' : select.matches('[data-sort-key]') ? 'default' : 'all'; });
+    actionFilter = 'all';
+    controls.querySelectorAll('[data-action-filter]').forEach(button => button.classList.toggle('active', button.dataset.actionFilter === 'all'));
+    applyFilters();
+  });
+  controls.querySelector('[data-default-view]')?.addEventListener('click', () => {
+    controls.querySelector('[data-reset-filter]').click();
+    controls.querySelector('[data-freeze]').checked = true;
+    table.classList.add('freeze-columns');
+    controls.querySelectorAll('input[data-column-index]').forEach(input => {
+      const col = columns.find(item => item.index === Number(input.dataset.columnIndex));
+      input.checked = col?.defaultVisible !== false;
+      setColumnVisible(table, Number(input.dataset.columnIndex), input.checked);
+    });
+    applyFilters();
+  });
+  applyFilters();
 }
 
 async function initReport() {
@@ -451,12 +523,7 @@ async function initReport() {
     doc.querySelector('#summary-module')?.remove();
     doc.querySelector('.settings')?.remove();
     host.innerHTML = doc.body.innerHTML;
-    const table = host.querySelector('table');
-    if (table) {
-      const columns = findReportColumns(table);
-      markReportColumns(table, columns);
-      table.classList.add('ops-report-table', 'freeze-columns');
-    }
+    buildColumnControls(host);
   } catch (error) {
     host.innerHTML = `<div class="empty">${escapeHtml(humanError(error))}。请确认任务已完成，且 OSS CORS 已允许本站域名。</div>`;
   }
