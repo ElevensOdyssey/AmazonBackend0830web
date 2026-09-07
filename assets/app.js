@@ -290,6 +290,16 @@ function setColumnVisible(table, index, visible) {
   });
 }
 
+function hideStructurallyEmptyColumns(table) {
+  const headers = [...table.querySelectorAll('thead th')];
+  const bodyRows = [...table.querySelectorAll('tbody tr')];
+  headers.forEach((header, index) => {
+    const headerEmpty = normalizeHeader(header.textContent) === '';
+    const columnEmpty = bodyRows.every(row => !String(row.cells[index]?.textContent || '').trim());
+    if (headerEmpty && columnEmpty) setColumnVisible(table, index, false);
+  });
+}
+
 function markReportColumns(table, columns) {
   columns.forEach(col => {
     [...table.rows].forEach(row => {
@@ -371,6 +381,7 @@ function buildColumnControls(host) {
   const table = host.querySelector('table');
   if (!table) return;
   host.querySelectorAll('.column-controls,.report-filter-panel,.report-toolbar,.view-controls').forEach(el => el.remove());
+  hideStructurallyEmptyColumns(table);
   const columns = findReportColumns(table);
   if (!columns.length) return;
   markReportColumns(table, columns);
