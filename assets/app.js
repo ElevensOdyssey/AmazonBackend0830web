@@ -320,6 +320,15 @@ function enhanceCell(cell, key) {
   cell.dataset.enhanced = '1';
   const safe = escapeHtml(text);
   const nums = numbersFromText(text);
+  if (key === 'competitionSummary') {
+    const asinLine = cell.querySelector('.competition-cell > span');
+    if (asinLine) {
+      const asins = asinLine.textContent.split('/').map(value => value.trim()).filter(Boolean);
+      asinLine.classList.add('competition-asins');
+      asinLine.innerHTML = asins.map(asin => `<span class="competition-asin">${escapeHtml(asin)}</span>`).join('');
+    }
+    return;
+  }
   if (key === 'keyword') {
     const lines = splitCellLines(text);
     const title = lines[0] || text;
