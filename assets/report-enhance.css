@@ -31,3 +31,27 @@ html[data-theme=light] .ops-report-table th,html[data-theme=light] .column-toggl
 @media(max-width:1500px){.filter-grid{grid-template-columns:repeat(6,minmax(125px,1fr))}.range-grid{grid-template-columns:repeat(3,minmax(190px,1fr))}}
 @media(max-width:1050px){.filter-grid{grid-template-columns:repeat(3,minmax(150px,1fr))}.range-grid{grid-template-columns:repeat(2,minmax(210px,1fr))}}
 @media(max-width:700px){.report-filter-panel{left:6px;width:calc(100vw - 28px);margin:8px}.report-filter-panel>summary{align-items:flex-start}.filter-title,.filter-status{align-items:flex-start;flex-direction:column;gap:2px}.filter-grid,.range-grid{grid-template-columns:1fr}.filter-grid .filter-wide{grid-column:auto}.freeze-toggle{margin-left:0}}
+
+/* Semantic theme bridge for modular reports that carry legacy inline colors. */
+html[data-theme=dark] .report-content{--bg:#0f172a;--bg-soft:#111c33;--panel:#16233d;--panel-2:#1b2b4a;--text:#edf4ff;--muted:#9fb0c9;--line:#2d3d5c;--brand:#8ab4f8}
+html[data-theme=light] .report-content{--bg:#f8fbff;--bg-soft:#eef4ff;--panel:#fff;--panel-2:#f5f8ff;--text:#182334;--muted:#64748b;--line:#dbe5f3;--brand:#1a73e8}
+.report-content .report-framework{background:var(--bg-soft)!important;color:var(--text)!important}
+.report-content .module-sidebar{background:var(--panel)!important;border-color:var(--line)!important;color:var(--text)!important}
+.report-content .module-brand strong,.report-content .module-heading h2,.report-content .module-placeholder h2{color:var(--text)!important}
+.report-content .module-brand small,.report-content .module-heading p,.report-content .module-link i{color:var(--muted)!important}
+.report-content .module-link{color:var(--muted)!important}
+.report-content .module-link b{background:var(--panel-2)!important;color:var(--brand)!important}
+.report-content .module-content{background:var(--bg-soft)!important;color:var(--text)!important}
+.report-content .report-module,.report-content .report-module>.wrap{color:var(--text)!important}
+.report-content .report-module .card,.report-content .report-module .panel{background:var(--panel)!important;border-color:var(--line)!important;color:var(--text)!important}
+.report-content .report-module .meta,.report-content .report-module .note,.report-content .rank-note,.report-content .negative-note{background:var(--panel-2)!important;border-color:var(--line)!important;color:var(--text)!important}
+.report-content .report-module table,.report-content .organic-rank-table table,.report-content .negative-table table{background:var(--panel)!important;color:var(--text)!important}
+.report-content .report-module th,.report-content .organic-rank-table th,.report-content .negative-table th{background:var(--panel-2)!important;color:var(--text)!important;border-color:var(--line)!important}
+.report-content .report-module td,.report-content .organic-rank-table td,.report-content .negative-table td{background:var(--panel)!important;color:var(--text)!important;border-color:var(--line)!important}
+.report-content .report-module tbody tr:hover td{background:color-mix(in srgb,var(--panel) 90%,var(--brand) 10%)!important}
+.report-content .report-module .rank-summary article,.report-content .report-module .negative-summary article,.report-content .rank-insights,.report-content .root-groups,.report-content .negative-export,.report-content .root-groups article{background:var(--panel)!important;border-color:var(--line)!important;color:var(--text)!important}
+.report-content .report-module .rank-summary span,.report-content .report-module .negative-summary span,.report-content .rank-insights li span,.report-content .root-groups p,.report-content .root-groups small,.report-content .rank-missing,.report-content .negative-empty{color:var(--muted)!important}
+.report-content .module-placeholder{background:var(--panel-2)!important;border-color:var(--line)!important;color:var(--muted)!important}
+.report-content .negative-export pre{background:var(--bg)!important;color:var(--text)!important}
+.report-content .benchmark-product,.report-content .cell-details summary{color:var(--brand)!important}
+html[data-theme=light] .report-content .report-module td strong,html[data-theme=light] .report-content .report-module td b,html[data-theme=light] .report-content .report-module h1,html[data-theme=light] .report-content .report-module h2,html[data-theme=light] .report-content .report-module h3{color:var(--text)}
