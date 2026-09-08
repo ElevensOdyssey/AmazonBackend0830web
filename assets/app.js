@@ -15,9 +15,9 @@ const REPORT_COLUMNS = [
   { key: 'ownOrganicRank', label: '自己自然位', aliases: ['自己自然位'] },
   { key: 'competitorOrganicRank', label: '竞对自然位', aliases: ['竞对自然位'] },
   { key: 'ranks', label: '自然位', aliases: ['自然位'] },
-  { key: 'orders', label: '广告：订单', aliases: ['订单'] },
-  { key: 'spend', label: '广告：花费', aliases: ['花费'] },
-  { key: 'acos', label: '广告：ACOS', aliases: ['ACOS'] },
+  { key: 'orders', label: '广告订单', aliases: ['广告订单', '广告：订单', '订单'] },
+  { key: 'spend', label: '广告花费', aliases: ['广告花费', '广告：花费', '花费'] },
+  { key: 'acos', label: '广告ACOS', aliases: ['广告ACOS', '广告：ACOS', 'ACOS'] },
   { key: 'fieldSource', label: '字段来源', aliases: ['字段来源'], defaultVisible: false },
   { key: 'action', label: '打法建议', aliases: ['打法建议'] },
   { key: 'promotionAssessment', label: 'SIF 推广评估', aliases: ['SIF 推广评估'], defaultVisible: false }
@@ -302,6 +302,10 @@ function hideStructurallyEmptyColumns(table) {
 
 function markReportColumns(table, columns) {
   columns.forEach(col => {
+    if (['orders', 'spend', 'acos'].includes(col.key)) {
+      const header = table.tHead?.rows[0]?.cells[col.index];
+      if (header) header.textContent = col.label;
+    }
     [...table.rows].forEach(row => {
       const cell = row.cells[col.index];
       if (cell) cell.classList.add(`report-col-${col.key}`);
