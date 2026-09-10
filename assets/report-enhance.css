@@ -55,3 +55,21 @@ html[data-theme=light] .report-content{--bg:#f8fbff;--bg-soft:#eef4ff;--panel:#f
 .report-content .negative-export pre{background:var(--bg)!important;color:var(--text)!important}
 .report-content .benchmark-product,.report-content .cell-details summary{color:var(--brand)!important}
 html[data-theme=light] .report-content .report-module td strong,html[data-theme=light] .report-content .report-module td b,html[data-theme=light] .report-content .report-module h1,html[data-theme=light] .report-content .report-module h2,html[data-theme=light] .report-content .report-module h3{color:var(--text)}
+/* Light-mode repair for legacy module HTML that embeds dark-only colors. */
+html[data-theme=light] .report-content .module-sidebar{background:transparent!important;border-right-color:transparent!important}
+html[data-theme=light] .report-content .module-link{background:transparent!important;border-color:transparent!important;color:var(--muted)!important}
+html[data-theme=light] .report-content .module-link b{background:var(--panel-2)!important;color:var(--brand)!important}
+html[data-theme=light] .report-content #module-01:checked~.report-framework label[for="module-01"],html[data-theme=light] .report-content #module-02:checked~.report-framework label[for="module-02"],html[data-theme=light] .report-content #module-03:checked~.report-framework label[for="module-03"],html[data-theme=light] .report-content #module-04:checked~.report-framework label[for="module-04"],html[data-theme=light] .report-content #module-05:checked~.report-framework label[for="module-05"],html[data-theme=light] .report-content #module-06:checked~.report-framework label[for="module-06"]{background:color-mix(in srgb,var(--brand) 11%,var(--panel))!important;border-color:color-mix(in srgb,var(--brand) 32%,var(--line))!important;color:var(--text)!important}
+html[data-theme=light] .report-content .image-note,html[data-theme=light] .report-content .image-gaps{background:#eef5ff!important;border-color:#c9dcf6!important;color:#203a5d!important}
+html[data-theme=light] .report-content .image-note *,html[data-theme=light] .report-content .image-gaps *{color:inherit!important}
+html[data-theme=light] .report-content .image-matrix{border-color:#c9dcf6!important}
+html[data-theme=light] .report-content .image-matrix table,html[data-theme=light] .report-content .image-card{background:var(--panel)!important;border-color:#c9dcf6!important;color:var(--text)!important}
+html[data-theme=light] .report-content .image-matrix thead th{background:#e8f1ff!important;color:var(--text)!important;border-color:#c9dcf6!important}
+html[data-theme=light] .report-content .image-matrix tbody th{background:#f3f7ff!important;color:var(--text)!important;border-color:#c9dcf6!important}
+html[data-theme=light] .report-content .image-matrix td{background:var(--panel)!important;color:var(--text)!important;border-color:#d7e4f6!important}
+html[data-theme=light] .report-content .image-matrix th small,html[data-theme=light] .report-content .image-matrix td p,html[data-theme=light] .report-content .image-card header span,html[data-theme=light] .report-content .image-card dd{color:#536b8a!important}
+html[data-theme=light] .report-content .image-status.answered{background:#d9f3e4!important;color:#086c3b!important}
+html[data-theme=light] .report-content .image-status.partial{background:#fff0c7!important;color:#815600!important}
+html[data-theme=light] .report-content .image-status.missing{background:#ffe0df!important;color:#a82a26!important}
+html[data-theme=light] .report-content .image-card header{background:#edf4ff!important;color:var(--text)!important}
+html[data-theme=light] .report-content .image-card dt{color:#1458aa!important}
