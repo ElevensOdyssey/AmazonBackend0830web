@@ -91,3 +91,17 @@ html[data-theme=light] .report-content .image-card dt{color:#1458aa!important}
 .report-content .report-module-02 .organic-rank-table th:nth-child(4),.report-content .report-module-02 .organic-rank-table td:nth-child(4){width:250px!important;min-width:250px!important}
 .report-content .report-module-02 .benchmark-product{display:inline-flex!important;align-items:center!important;gap:10px!important;max-width:230px!important}
 .report-content .report-module-02 .benchmark-thumb{width:46px!important;height:46px!important;flex:0 0 46px!important}
+/* Competitor comparison: keep feature columns compact but give text evidence room to breathe. */
+.report-content .report-module-04 .compare-table{overflow-x:auto!important}
+.report-content .report-module-04 .compare-table table{width:max-content!important;min-width:2500px!important;table-layout:auto!important}
+.report-content .report-module-04 .compare-table th,.report-content .report-module-04 .compare-table td{padding:10px 12px!important;line-height:1.45!important;vertical-align:top!important;overflow-wrap:normal!important;word-break:normal!important}
+.report-content .report-module-04 .compare-table th{white-space:nowrap!important}
+.report-content .report-module-04 .compare-table th:first-child,.report-content .report-module-04 .compare-table td:first-child{width:250px!important;min-width:250px!important}
+.report-content .report-module-04 .compare-table th:nth-child(2),.report-content .report-module-04 .compare-table td:nth-child(2){width:90px!important;min-width:90px!important;white-space:normal!important}
+.report-content .report-module-04 .compare-table th:nth-child(3),.report-content .report-module-04 .compare-table td:nth-child(3){width:360px!important;min-width:360px!important;white-space:normal!important;overflow-wrap:anywhere!important}
+.report-content .report-module-04 .compare-table th:nth-child(n+4):nth-child(-n+11),.report-content .report-module-04 .compare-table td:nth-child(n+4):nth-child(-n+11){width:96px!important;min-width:96px!important;white-space:nowrap!important;text-align:center!important}
+.report-content .report-module-04 .compare-table th:nth-child(n+12),.report-content .report-module-04 .compare-table td:nth-child(n+12){width:92px!important;min-width:92px!important;white-space:nowrap!important;text-align:center!important}
+.report-content .report-module-04 .compare-product{display:flex!important;align-items:center!important;gap:9px!important;min-width:0!important}
+.report-content .report-module-04 .compare-product img,.report-content .report-module-04 .compare-product>span{width:54px!important;height:54px!important;flex:0 0 54px!important}
+.report-content .report-module-04 .compare-product div{min-width:0!important}
+.report-content .report-module-04 .compare-product b{display:block!important;max-width:160px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
