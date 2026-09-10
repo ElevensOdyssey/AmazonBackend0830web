@@ -73,3 +73,11 @@ html[data-theme=light] .report-content .image-status.partial{background:#fff0c7!
 html[data-theme=light] .report-content .image-status.missing{background:#ffe0df!important;color:#a82a26!important}
 html[data-theme=light] .report-content .image-card header{background:#edf4ff!important;color:var(--text)!important}
 html[data-theme=light] .report-content .image-card dt{color:#1458aa!important}
+/* Negative-keyword table: size columns by content instead of stretching a 2200px grid. */
+.report-content .report-module-03 .negative-table{overflow-x:auto!important}
+.report-content .report-module-03 .negative-table table{width:max-content!important;min-width:0!important;table-layout:auto!important}
+.report-content .report-module-03 .negative-table th,.report-content .report-module-03 .negative-table td{padding:10px 12px!important;white-space:nowrap!important}
+.report-content .report-module-03 .negative-table th:nth-child(1),.report-content .report-module-03 .negative-table td:nth-child(1){width:240px!important;min-width:240px!important}
+.report-content .report-module-03 .negative-table th:nth-child(n+2):nth-child(-n+5),.report-content .report-module-03 .negative-table td:nth-child(n+2):nth-child(-n+5){width:82px!important;min-width:82px!important;text-align:center!important}
+.report-content .report-module-03 .negative-table th:nth-child(6),.report-content .report-module-03 .negative-table td:nth-child(6){width:88px!important;min-width:88px!important;text-align:center!important}
+.report-content .report-module-03 .negative-table th:nth-child(7),.report-content .report-module-03 .negative-table td:nth-child(7){width:360px!important;min-width:360px!important;white-space:normal!important}
