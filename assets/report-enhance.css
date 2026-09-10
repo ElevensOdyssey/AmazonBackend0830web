@@ -81,3 +81,13 @@ html[data-theme=light] .report-content .image-card dt{color:#1458aa!important}
 .report-content .report-module-03 .negative-table th:nth-child(n+2):nth-child(-n+5),.report-content .report-module-03 .negative-table td:nth-child(n+2):nth-child(-n+5){width:82px!important;min-width:82px!important;text-align:center!important}
 .report-content .report-module-03 .negative-table th:nth-child(6),.report-content .report-module-03 .negative-table td:nth-child(6){width:88px!important;min-width:88px!important;text-align:center!important}
 .report-content .report-module-03 .negative-table th:nth-child(7),.report-content .report-module-03 .negative-table td:nth-child(7){width:360px!important;min-width:360px!important;white-space:normal!important}
+/* Organic benchmark table: compact to content so one screen shows the useful columns. */
+.report-content .report-module-02 .organic-rank-table{overflow-x:auto!important}
+.report-content .report-module-02 .organic-rank-table table{width:max-content!important;min-width:0!important;table-layout:auto!important}
+.report-content .report-module-02 .organic-rank-table th,.report-content .report-module-02 .organic-rank-table td{padding:10px 12px!important;white-space:nowrap!important;vertical-align:middle!important}
+.report-content .report-module-02 .organic-rank-table th:nth-child(1),.report-content .report-module-02 .organic-rank-table td:nth-child(1){width:260px!important;min-width:260px!important;text-align:left!important}
+.report-content .report-module-02 .organic-rank-table td:nth-child(1)>b{font-size:16px!important;line-height:1.35!important}
+.report-content .report-module-02 .organic-rank-table th:nth-child(2),.report-content .report-module-02 .organic-rank-table td:nth-child(2),.report-content .report-module-02 .organic-rank-table th:nth-child(3),.report-content .report-module-02 .organic-rank-table td:nth-child(3),.report-content .report-module-02 .organic-rank-table th:nth-child(5),.report-content .report-module-02 .organic-rank-table td:nth-child(5),.report-content .report-module-02 .organic-rank-table th:nth-child(6),.report-content .report-module-02 .organic-rank-table td:nth-child(6){width:118px!important;min-width:118px!important;text-align:center!important}
+.report-content .report-module-02 .organic-rank-table th:nth-child(4),.report-content .report-module-02 .organic-rank-table td:nth-child(4){width:250px!important;min-width:250px!important}
+.report-content .report-module-02 .benchmark-product{display:inline-flex!important;align-items:center!important;gap:10px!important;max-width:230px!important}
+.report-content .report-module-02 .benchmark-thumb{width:46px!important;height:46px!important;flex:0 0 46px!important}
