@@ -91,6 +91,17 @@ html[data-theme=light] .report-content .image-card dt{color:#1458aa!important}
 .report-content .report-module-02 .organic-rank-table th:nth-child(4),.report-content .report-module-02 .organic-rank-table td:nth-child(4){width:250px!important;min-width:250px!important}
 .report-content .report-module-02 .benchmark-product{display:inline-flex!important;align-items:center!important;gap:10px!important;max-width:230px!important}
 .report-content .report-module-02 .benchmark-thumb{width:46px!important;height:46px!important;flex:0 0 46px!important}
+/* Ad optimization: repair light-mode contrast for action summary and badges. */
+.report-content .report-module-06 .ad-summary article{background:var(--panel)!important;border-color:var(--line)!important;color:var(--text)!important}
+.report-content .report-module-06 .ad-summary span{color:var(--muted)!important}
+.report-content .report-module-06 .ad-summary b{color:var(--text)!important}
+.report-content .report-module-06 .ad-warning{background:color-mix(in srgb,#f59e0b 14%,var(--panel))!important;border-color:color-mix(in srgb,#f59e0b 38%,var(--line))!important;color:var(--text)!important}
+.report-content .report-module-06 .ad-action{font-weight:850!important;color:var(--text)!important}
+html[data-theme=light] .report-content .report-module-06 .ad-action.keep{background:#d9f3e4!important;color:#086c3b!important}
+html[data-theme=light] .report-content .report-module-06 .ad-action.lower{background:#fff0c7!important;color:#815600!important}
+html[data-theme=light] .report-content .report-module-06 .ad-action.stop{background:#ffe0df!important;color:#a82a26!important}
+html[data-theme=light] .report-content .report-module-06 .ad-action.add{background:#e1efff!important;color:#1458aa!important}
+html[data-theme=light] .report-content .report-module-06 .ad-action.watch{background:#e8eef7!important;color:#334155!important}
 /* Competitor comparison: keep feature columns compact but give text evidence room to breathe. */
 .report-content .report-module-04 .compare-table{overflow-x:auto!important}
 .report-content .report-module-04 .compare-table table{width:max-content!important;min-width:2500px!important;table-layout:auto!important}
