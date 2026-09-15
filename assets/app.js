@@ -157,7 +157,7 @@ async function renderTasks(user) {
     target.innerHTML = '<div class="empty">还没有任务。提交第一份广告报表后，进度会显示在这里。</div>';
     return;
   }
-  target.innerHTML = `<div class="table-wrap"><table><thead><tr><th>提交时间</th><th>ASIN</th><th>状态</th><th>报告／失败原因</th></tr></thead><tbody>${data.map(t => `<tr><td>${new Date(t.created_at).toLocaleString()}</td><td>${escapeHtml(t.asin)}</td><td><span class="${taskClass(t.status)}">${escapeHtml(t.status)}</span></td><td>${t.report_link ? `<a class="button secondary" href="${appUrl(`/report/?task=${encodeURIComponent(t.id)}`)}">查看报告</a>` : escapeHtml(t.failure_reason || '等待工人领取')}</td></tr>`).join('')}</tbody></table></div>`;
+  target.innerHTML = `<div class="table-wrap"><table><thead><tr><th>提交时间</th><th>ASIN</th><th>状态</th><th>报告／失败原因</th></tr></thead><tbody>${data.map(t => `<tr><td>${new Date(t.created_at).toLocaleString()}</td><td>${escapeHtml(t.asin)}</td><td><span class="${taskClass(t.status)}">${escapeHtml(t.status === '进行中' ? '正在执行' : t.status === '失败' ? '错误' : t.status)}</span></td><td>${t.report_link ? `<a class="button secondary" href="${appUrl(`/report/?task=${encodeURIComponent(t.id)}`)}">查看报告</a>` : escapeHtml(t.failure_reason || (t.status === '进行中' ? '正在执行' : t.status === '失败' ? '错误' : t.status === '待处理' ? '等待执行' : t.status === '已完成' ? '已完成' : '状态未知'))}</td></tr>`).join('')}</tbody></table></div>`;
 }
 
 async function initLogin() {
